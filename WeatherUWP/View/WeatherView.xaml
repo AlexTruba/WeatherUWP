@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="WeatherUWP.View.WeatherView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mntone.SvgForXaml.UI.Xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:WeatherUWP.Converter"
+    mc:Ignorable="d"
+    DataContext="{Binding WeatherVMInstance,Source={StaticResource Locator}}">
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="bool2vis"/>
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="AliceBlue" Grid.Row="0" Grid.ColumnSpan="2"></Rectangle>
+        <TextBox Text="{Binding CityName,Mode=TwoWay}" PlaceholderText="Назва міста" FontSize="20" Padding="10" Margin="10" Background="Transparent" BorderBrush="Gray" BorderThickness="1"/>
+        <Button Command="{Binding WeatherSearch}" Grid.Row="0" Grid.Column="2" Padding="40 10 40 10" Background="White" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center">Знайти</Button>
+
+        <ProgressRing Grid.Row="1" Grid.ColumnSpan="2" x:Name="loadProgress" IsActive="{Binding isRingShow,Mode=TwoWay}" VerticalAlignment="Center" Height="50px" Width="50px"/>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <TextBlock Margin="15" Text="Інформації по заданому місту не знайдено! Спробуйте інше" TextAlignment="Center"  VerticalAlignment="Center" TextWrapping="WrapWholeWords" Visibility="{Binding IsErrorVisible, Mode=TwoWay, Converter={StaticResource bool2vis}}"/>
+            <StackPanel Visibility="{Binding IsContentVisible, Mode=TwoWay}" Margin="0 0 0 0 ">
+                <TextBlock Margin="50 10 10 10" Text="{Binding FoundCity,Mode=TwoWay}" TextAlignment="Left"  VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
+                <TextBlock Margin="15" FontSize="24" Text="{Binding Date}" TextAlignment="Center"  VerticalAlignment="Center" TextWrapping="WrapWholeWords"/>
+                <Image Source="{Binding ImagePath,Mode=TwoWay}" Height="120px" Width="120px" Margin="0 -10 0 -10" HorizontalAlignment="Center"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="Температура" Grid.Column="0" Grid.Row="0"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="Вологість" Grid.Column="0" Grid.Row="1"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="Швидкість вітру" Grid.Column="0" Grid.Row="2"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="Хмарність" Grid.Column="0" Grid.Row="3"></TextBlock>
+
+                    <TextBlock Margin="15" TextAlignment="Center" Text="{Binding Temperature}" Grid.Column="1" Grid.Row="0"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="{Binding Humidity}" Grid.Column="1" Grid.Row="1"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="{Binding WindSpeed}" Grid.Column="1" Grid.Row="2"></TextBlock>
+                    <TextBlock Margin="15" TextAlignment="Center" Text="{Binding Cloudiness}" Grid.Column="1" Grid.Row="3"></TextBlock>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
